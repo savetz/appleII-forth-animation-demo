@@ -1,0 +1,1625 @@
+-------------------------------------------- SCREEN 044
+( ASSEMBLER CONT         < 6/14/83> 44) 
+HEX                                     
+: .A  0 MODE ! ;    : #  1 MODE ! ;     
+                                        
+: MEM  2 MODE ! ;                       
+                                        
+: ,X  3 MODE ! ;   : ,Y  4 MODE ! ;     
+                                        
+: X)  5 MODE ! ;   : )Y  6 MODE ! ;     
+                                        
+: )  F MODE ! ;   : BOT  0 ,X ;         
+                                        
+: SEC  2 ,X ;      : TOP  BOT ;         
+                                        
+: RP) 101 ,X ;                          
+                                        
+: UPMODE                                
+   IF MODE C@ 8 AND 0=                  
+    IF 8 MODE +!                        
+   THEN THEN                            
+  1 MODE C@ F AND ?DUP                  
+   IF 0 DO DUP + LOOP THEN              
+   OVER 1+ @ AND 0= ;                   
+DECIMAL -->                    ( 21:47) 
+-------------------------------------------- SCREEN 045
+( ASSEMBLER CONT         < 6/14/83> 45) 
+HEX                                     
+                                        
+: CPU  CREATE C, DOES> C@ C, MEM ;      
+                                        
+00 CPU BRK,        18 CPU CLC,          
+D8 CPU CLD,        58 CPU CLI,          
+B8 CPU CLV,        CA CPU DEX,          
+88 CPU DEY,        E8 CPU INX,          
+C8 CPU INY,        EA CPU NOP,          
+48 CPU PHA,        08 CPU PHP,          
+68 CPU PLA,        28 CPU PLP,          
+40 CPU RTI,        60 CPU RTS,          
+38 CPU SEC,        F8 CPU SED,          
+78 CPU SEI,        AA CPU TAX,          
+A8 CPU TAY,        BA CPU TSX,          
+8A CPU TXA,        9A CPU TXS,          
+98 CPU TYA,                             
+                                        
+DECIMAL -->                             
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 046
+( ASSEMBLER CONT         < 6/14/83> 46) 
+HEX                                     
+                                        
+: M/CPU  CREATE C, , DOES>              
+   DUP 1+ C@ 80 AND                     
+    IF 10 MODE +! THEN                  
+   OVER -100 AND UPMODE UPMODE          
+    ABORT" INCORRECT ADDRESSING MODE"   
+   C@ MODE C@ INDEX + C@ + C,           
+   MODE C@ 7 AND                        
+    IF MODE C@ 0F AND 7 <               
+     IF C, ELSE , THEN                  
+    THEN MEM ;                          
+                                        
+1C6E 60 M/CPU ADC,   1C6E 20 M/CPU AND, 
+1C6E C0 M/CPU CMP,   1C6E 40 M/CPU EOR, 
+1C6E A0 M/CPU LDA,   1C6E 00 M/CPU ORA, 
+1C6E E0 M/CPU SBC,   1C6C 80 M/CPU STA, 
+0D0D 01 M/CPU ASL,   0C0C C1 M/CPU DEC, 
+0C0C E1 M/CPU INC,   0D0D 41 M/CPU LSR, 
+0D0D 21 M/CPU ROL,   0D0D 61 M/CPU ROR, 
+DECIMAL -->                             
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 047
+( ASSEMBLER CONT         < 6/14/83> 47) 
+HEX                                     
+                                        
+0414 81 M/CPU STX,   0486 E0 M/CPU CPX, 
+0486 C0 M/CPU CPY,   1496 A2 M/CPU LDX, 
+0C8E A0 M/CPU LDY,   048C 80 M/CPU STY, 
+0480 14 M/CPU JSR,   8480 40 M/CPU JMP, 
+0484 20 M/CPU BIT,                      
+                                        
+DECIMAL -->                             
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 048
+( ASSEMBLER CONT         < 6/14/83> 48) 
+HEX                                     
+                                        
+: NOT  20 + ;   90 IS CS    50 IS OV    
+                                        
+  D0 IS 0=   10 IS 0<   90 IS >=        
+                                        
+                                        
+DECIMAL -->                             
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 049
+( ASSEMBLER CONT         < 6/14/83> 49) 
+HEX                                     
+                                        
+0909 INDEX !        1505 INDEX 2+ !     
+0115 INDEX 4 + !    8011 INDEX 6 + !    
+8009 INDEX 8 + !    1D0D INDEX A + !    
+8019 INDEX C + !    8080 INDEX E + !    
+0080 INDEX 10 + !   1404 INDEX 12 + !   
+8014 INDEX 14 + !   8080 INDEX 16 + !   
+8080 INDEX 18 + !   1C0C INDEX 1A + !   
+801C INDEX 1C + !   2C80 INDEX 1E + !   
+                                        
+: !CSP  SP@ CSP ! ;                     
+FORTH DEFINITIONS  DECIMAL CR CR        
+                                        
+: METACOMPILER ;                        
+-->                                     
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 050
+( METACMPLR INSTRUCTIONS < 6/14/83> 50) 
+FORTH DEFINITIONS FORGET-SYS            
+FORGET METACOMPILER : METACOMPILER ;    
+VARIABLE HDS? PAGE  ?LONG               
+: COMPILE-NO-HDS 0 HDS? ! 51 LOAD ;     
+: COMPILE-HDS 1 HDS? ! 51 LOAD ;     ." 
+SCREEN 51 HAS THE CONSTANTS BASE-ADDR," 
+CR ." COMP-SEG, & COMP-ADDR FOR THE TARG
+ET" CR  ." SYSTEM." CR CR ." FOR MOST AP
+PLICATIONS, LEAVE BASE-ADDR" CR ." & COM
+P-ADDR SET TO 0800 AND COMP-SEG" CR     
+." SET TO 01 (FOR AUX MEM SYSTEM)." CR  
+CR ." IF YOU ARE METACOMPILING WITHOUT A
+UX" CR                                  
+." MEM, TYPE 38 L40 FOR INSTRUCTIONS ON"
+ CR ." METACOMPILING IN MAIN MEMORY     
+." CR CR CR   ." WHEN READY, TYPE COMPIL
+E-HDS OR" CR ." COMPILE-NO-HDS TO LOAD A
+ND INITIALIZE" CR ." THE METACOMPILER." 
+   CR QUIT                              
+                                        
+                                        
+                                        
+                                        
+-------------------------------------------- SCREEN 051
+( METACMPLR PARAMETERS   < 6/14/83> 51) 
+HEX    FORTH DEFINITIONS FORGET-SYS     
+: CMPL-TYP HDS? @ IF ." WITH-HEADS."    
+   ELSE ." NO-HEADS."                   
+   THEN ;                               
+                                        
+ 0800 CONSTANT BASE-ADDR    ?DOSL       
+   01 CONSTANT COMP-SEG                 
+ 0800 CONSTANT COMP-ADDR                
+                                        
+ COMP-ADDR BASE-ADDR - CONSTANT DELTA   
+     DVARIABLE NEW-SYS                  
+ COMP-SEG BASE-ADDR NEW-SYS D!          
+                                        
+ 0 IS *<.">*       0 IS *<ABORT">*      
+ 0 IS *DODOES*     0 IS *DOES>*         
+ 0 IS *COLON*      0 IS *VOCAB*         
+ 0 IS *<;CODE>*    0 IS *CONSTANT*      
+ 0 IS *DCONSTANT*  0 IS *VARIABLE*      
+ 0 IS *DVARIABLE*  0 IS *CREATE*        
+                   0 IS NF*LIT*         
+           ' LIT CFA IS *LIT*           
+           ' LIT CFA IS OF*LIT*         
+DECIMAL -->                    ( 21:47) 
+-------------------------------------------- SCREEN 052
+( METACOMPILER           < 6/14/83> 52) 
+                                        
+ VOCABULARY NEWFORTH IMMEDIATE          
+                                        
+: OF/NF [COMPILE] NEWFORTH DEFINITIONS  
+    [COMPILE] FORTH ;                   
+                                        
+                                        
+  VARIABLE DPNEW     VARIABLE DPOLD     
+  VARIABLE MOVEFLG   VARIABLE O/N       
+  VARIABLE DPBUILD                      
+  VARIABLE WORDBUILD    2000 ALLOT      
+                                        
+ COMP-ADDR DPNEW !                      
+ WORDBUILD DPBUILD !                    
+-->                                     
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 053
+( METACOMPILER           < 6/14/83> 53) 
+                                        
+  VARIABLE LAST                         
+                                        
+: SETOLD  O/N @                         
+   IF 0 O/N ! HERE DPBUILD ! DPOLD @ DP 
+     ! OF*LIT* [ ' *LIT* ] LITERAL !    
+   THEN ;                               
+                                        
+: SETNEW  O/N @ 0=                      
+   IF 1 O/N ! HERE DPOLD ! DPBUILD @ DP 
+    ! NF*LIT* [ ' *LIT* ] LITERAL !     
+   THEN ;                               
+                                        
+                                        
+                -->                     
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 054
+( METACOMPILER           < 6/14/83> 54) 
+: MOVEWORD?  MOVEFLG @                  
+   IF 0 MOVEFLG ! SETOLD GET:CS         
+    WORDBUILD COMP-SEG DPNEW @ DPBUILD  
+    @ WORDBUILD - ?DUP                  
+      IF DUP DPNEW +! 2000 OVER U<      
+ABORT" WORDBUILD SPACE EXCEEDED - HALT" 
+         CMOVEL WORDBUILD DPBUILD !     
+      ELSE DDROP DDROP                  
+      THEN                              
+   THEN ;                               
+                                        
+: STATUS?  MOVEWORD? SETNEW SETOLD CR CR
+ ." DPNEW = " DPNEW @ U. CR ." DPOLD = "
+  DPOLD @   U. CR ." BASE-ADDR = "      
+  BASE-ADDR U. CR ." COMP-SEG  = "      
+  COMP-SEG  U. CR ." COMP-ADDR = "      
+  COMP-ADDR U. CR CR DPNEW @  COMP-ADDR 
+   - 0 256 U/MOD SWAP DROP 1+           
+  ." SYSTEM SIZE IN SECTORS = " . CR ;  
+-->                                     
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 055
+( METACOMPILER           < 6/14/83> 55) 
+HEX                                     
+                                        
+ VARIABLE <IMMED> 38 ALLOT              
+ <IMMED> 2+ <IMMED> !                   
+                                        
+                                        
+: /SMUDGE <IMMED> @ <IMMED> 2+          
+   DO I @ 20 TOGGLE 2                   
+   +LOOP ;                              
+                                        
+                                        
+: NFFIND BL WORD [ ' NEWFORTH ]         
+   LITERAL @ 2+ 1 <<FIND> ;             
+                                        
+                                        
+DECIMAL -->                             
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 056
+( METACOMPILER           < 6/14/83> 56) 
+                                        
+: 'NF  /SMUDGE NFFIND DUP               
+     IF SWAP DROP                       
+     THEN /SMUDGE 0=                    
+     IF HERE COUNT TYPE SPACE ."  NF?"  
+      QUIT                              
+     THEN ;                             
+                                        
+: LFA:IN  'NF DUP CFA @ DELTA +         
+    2+ SWAP DUP LFA - - ;               
+                                        
+: NFA:IN  'NF DUP CFA @ DELTA + 2+      
+    SWAP DUP NFA - - ;                  
+                                        
+: REPLACED:BY  'NF CFA @ SWAP COMP-SEG  
+    SWAP !L ;                           
+                                        
+: BYTE:IN  MOVEWORD? 'NF CFA @ DELTA    
+    + 2+ + ;                            
+                                        
+: [FROM:NEWFORTH]  'NF CFA @ , ;        
+    IMMEDIATE                           
+-->                            ( 21:47) 
+-------------------------------------------- SCREEN 057
+( METACOMPILER           < 6/14/83> 57) 
+HEX                                     
+                                        
+: CREATE-OLD SETOLD HERE 0 , BL WORD    
+    DUP C@ WIDTH MIN 1+ ALLOT 80 TOGGLE 
+    HERE 1 - 80 TOGGLE DP C@ FF =       
+      IF DUP DUP 1+ 1 DP +! HERE OVER - 
+       BMOVE 1+                         
+      THEN [COMPILE] NEWFORTH           
+    DEFINITIONS CURRENT @ @ OVER !      
+    CURRENT @ ! ;                       
+                                        
+: HERERUN  DPNEW @ HERE WORDBUILD - +   
+    DELTA - ;                           
+                                        
+DECIMAL -->                             
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 058
+( METACOMPILER           < 6/14/83> 58) 
+HEX                                     
+                                        
+: WITH-HDS  HERE LAST @ DELTA - , 0     
+    LAST ! BL WORD DUP C@ WIDTH MIN 1+  
+    ALLOT 80 TOGGLE HERE 1 - 80 TOGGLE  
+    HERERUN FF AND FF =                 
+      IF 1 LAST ! DUP DUP 1+ 1 DP +!    
+       HERE OVER - BMOVE                
+      THEN DROP DPNEW @ LAST +! ;       
+                                        
+: CREATE-NEW MOVEWORD? 1 MOVEFLG !      
+    WORDBUILD DPBUILD ! SETNEW HDS? @   
+      IF WITH-HDS                       
+      THEN ;                            
+                                        
+: HEADS-ON 1 HDS? ! ;                   
+                                        
+: HEADS-OFF 0 HDS? ! ;                  
+                                        
+DECIMAL -->                             
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 059
+( METACOMPILER           < 6/14/83> 59) 
+HEX                                     
+                                        
+ ASSEMBLER DEFINITIONS                  
+: ?RANGE  DUP ABS 7F >                  
+    ABORT" BRANCH TOO LARGE" ;          
+                                        
+: ADJUST  WORDBUILD - DPNEW @ +         
+    DELTA - ;                           
+                                        
+: BEGIN,  HERE 1 ;                      
+                                        
+                                        
+: UNTIL,  >R 1 ?PAIRS R> C, HERE 1+ -   
+    ?RANGE C, ;                         
+                                        
+: IF,  C, HERE 0 C, 2 ;                 
+                                        
+                                        
+DECIMAL -->                             
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 060
+( METACOMPILER           < 6/14/83> 60) 
+                                        
+: THEN,  2 ?PAIRS HERE OVER C@          
+     IF ADJUST SWAP !                   
+     ELSE OVER 1+ - ?RANGE SWAP C!      
+     THEN ;                             
+                                        
+: ELSE,  2 ?PAIRS HERE 1+ 1 JMP, SWAP   
+    HERE OVER 1+ - ?RANGE SWAP C! 2 ;   
+                                        
+                                        
+: AGAIN,  1 ?PAIRS ADJUST JMP, ;        
+                                        
+: WHILE,  >R DUP 1 ?PAIRS R> IF, 2+ ;   
+                                        
+: REPEAT,  >R >R 1 ?PAIRS ADJUST        
+    JMP, R> R> 2 - THEN, ;              
+                                        
+                 -->                    
+                                        
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 061
+( METACOMPILER           < 6/14/83> 61) 
+HEX    FORTH DEFINITIONS                
+                                        
+: NF:  !CSP CREATE-OLD SMUDGE [ ' QUIT  
+    CFA @ ] LITERAL , [COMPILE] FORTH ] 
+    LATEST 40 TOGGLE ; ( IMMEDIATE )    
+                                        
+: NF;  ?CSP COMPILE EXIT SMUDGE         
+    [COMPILE] [ ; IMMEDIATE             
+                                        
+: LITERAL  STATE @                      
+      IF *LIT* , , THEN ; IMMEDIATE     
+                                        
+: DLITERAL  STATE @                     
+    IF SWAP [COMPILE] LITERAL [COMPILE] 
+      LITERAL                           
+    THEN ; IMMEDIATE                    
+                                        
+DECIMAL -->                             
+                                        
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 062
+( METACOMPILER           < 6/14/83> 62) 
+                                        
+: INTERPRET                             
+      BEGIN BL WORD CONTEXT @ @ 2+ 1    
+       <<FIND>                          
+         IF STATE @ <                   
+            IF CFA O/N @                
+               IF @ THEN ,              
+            ELSE CFA EXECUTE            
+            THEN                        
+         ELSE HERE NUMBER DPL @ 1+      
+            IF [COMPILE] DLITERAL       
+            ELSE DROP [COMPILE] LITERAL 
+            THEN                        
+         THEN ?STACK                    
+      AGAIN  ;                          
+                                        
+-->                                     
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 063
+( METACOMPILER           < 6/14/83> 63) 
+                                        
+: QUIT  0 BLK ! [COMPILE] [             
+     BEGIN RP! CR QUERY INTERPRET STATE 
+         @ 0=                           
+        IF ."  NK" THEN                 
+     AGAIN ;                            
+                                        
+: LOAD  DUP . BLK @ >R >IN @ >R 0 >IN ! 
+    BLK ! INTERPRET R> >IN ! R> BLK ! ; 
+                                        
+: -->  ?LOADING  0 >IN ! 1 BLK +! BLK @ 
+    DUP SCR ! . ; IMMEDIATE             
+                                        
+-->                                     
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 064
+( METACOMPILER           < 6/14/83> 64) 
+                                        
+  VARIABLE NEW-SECTS                    
+                                        
+: SAVE-NEW  CR CR                       
+    ." INIT'D + VIRTUAL DISK IN DRV A " 
+    (Y/N)? CR                           
+      IF MOVEWORD? SETNEW SETOLD        
+       [COMPILE] FORTH DEFINITIONS      
+       COMP-SEG COMP-ADDR 6 0           
+       SYSTEM-SIZE 16 + SECS/TRK /MOD 0 
+       DPNEW @ COMP-ADDR - 0 256 U/MOD  
+       SWAP DROP 1+ DUP NEW-SECTS !     
+       SAVE-FORTH RWTSL                 
+      THEN ;                            
+                                        
+: GET-NEW  NEW-SECTS @                  
+     IF COMP-SEG COMP-ADDR 6 0          
+      SYSTEM-SIZE 16 + SECS/TRK /MOD 1  
+      NEW-SECTS @ RWTSL QUIT            
+     THEN ;                             
+-->                                     
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 065
+( METACOMPILER           < 6/14/83> 65) 
+HEX                                     
+: IMMEDIATE  MOVEWORD? COMP-SEG         
+    LAST @ 2+ OVER OVER @L 40 XOR 3 ROLL
+    3 ROLL !L LATEST <IMMED> @ ! 2      
+    <IMMED> +! SMUDGE ;                 
+                                        
+: CFANEW  CFA @ ;                       
+                                        
+: 'NEW  'NF CFANEW 2+ [COMPILE]         
+   LITERAL ;                            
+                                        
+: LABEL SETNEW HERERUN SETOLD 1         
+    MOVEFLG ! CURRENT @ >R [COMPILE]    
+    ASSEMBLER DEFINITIONS CONSTANT R>   
+    CURRENT ! SETNEW ;                  
+                                        
+DECIMAL -->                             
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 066
+( METACOMPILER           < 6/14/83> 66) 
+                                        
+: CODE  >IN @ CREATE-NEW >IN !          
+    HERERUN CREATE-OLD , SMUDGE SETNEW  
+    HERERUN 2+ , [COMPILE] ASSEMBLER    
+    ASSEMBLER MEM !CSP ; FORTH          
+                                        
+: C;  ?CSP SMUDGE [COMPILE] FORTH ;     
+                                        
+: END-CODE  C; ;                        
+                                        
+: CONSTANT  >IN @ CREATE-NEW >IN !      
+    HERERUN *CONSTANT* , SWAP ,         
+    CREATE-OLD , SETNEW [COMPILE]       
+    FORTH ;                             
+                                        
+-->                                     
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 067
+( METACOMPILER           < 6/14/83> 67) 
+                                        
+: DCONSTANT  >IN @ CREATE-NEW >IN       
+    ! HERERUN *DCONSTANT*               
+    , 3 ROLL 3 ROLL , , CREATE-OLD ,    
+    SETNEW [COMPILE] FORTH ;            
+                                        
+                                        
+: VARIABLE  >IN @ CREATE-NEW >IN !      
+    HERERUN *VARIABLE* , 0 , CREATE-OLD 
+    , SETNEW [COMPILE] FORTH ;          
+                                        
+-->                                     
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 068
+( METACOMPILER           < 6/14/83> 68) 
+HEX                                     
+                                        
+: DVARIABLE  >IN @ CREATE-NEW >IN !     
+    HERERUN *DVARIABLE* , 0 , 0 ,       
+    CREATE-OLD , SETNEW [COMPILE]       
+    FORTH ;                             
+                                        
+: VOCABULARY  >IN @ CREATE-NEW >IN !    
+    HERERUN *VOCAB* , LAST @ DELTA - ,  
+    A081 , 0 , CREATE-OLD , SETNEW      
+    [COMPILE] FORTH ;                   
+                                        
+: .$  1 OVER +! 24 WORD C@ 1+ ALLOT ;   
+                                        
+: ;$  DROP ;                            
+                                        
+: :$  >IN @ CREATE-NEW >IN ! HERERUN    
+    *VARIABLE* , CREATE-OLD , SETNEW    
+    [COMPILE] FORTH HERE 0 , ;          
+DECIMAL -->                             
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 069
+( METACOMPILER <NEW :'S >< 6/14/83> 69) 
+HEX                                     
+                                        
+: NFALLOT MOVEWORD? 1 MOVEFLG !         
+    WORDBUILD DPBUILD ! SETNEW          
+    [COMPILE] FORTH HERE OVER 0 FILL DP 
+    +! MOVEWORD? SETNEW ;               
+                                        
+: :  >IN @  CREATE-NEW >IN ! HERERUN    
+    *COLON* , CREATE-OLD , SMUDGE SETNEW
+    ] !CSP ;                            
+                                        
+NF:  OF/NF [COMPILE] NEWFORTH           
+    DEFINITIONS [COMPILE] FORTH NF;     
+                                        
+                                        
+                                        
+  ' QUIT 2 - ' 'NF 24 + !               
+   0 'NF OF/NF LFA !                    
+                                        
+OF/NF DECIMAL FORTH DEFINITIONS         
+-->                                     
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 070
+( METACOMPILER <END>     < 6/14/83> 70) 
+        PAGE COPYRIGHT                  
+." THE METACOMPILER IS SET TO BEGIN" CR 
+." METACOMPILING " CMPL-TYP CR CR       
+." QUIT RETN RETN WILL PRODUCE  NK," CR 
+." THE METACOMPILER OK TO VERIFY READY" 
+CR ." FOR COMPILING.  IF YOU DON'T GET T
+HE" CR ." NK, SOMETHING IS WRONG.. REFER
+ TO THE" CR ." MANUAL" CR CR ." YOU MUST
+ NOT ADD ANY NEW WORDS THAT" CR ." ARE N
+OT TO BE PART OF THE SYSTEM ABOUT" CR   
+." TO BE COMPILED." CR CR ." LOCATE THE 
+APPROPRIATE SOURCE SCREENS" CR ." DISK A
+ND PLACE IT IN DRIVE B AND TYPE" CR     
+." 1 ONB LOAD." CR CR                   
+." INSTRUCTIONS FOR THE STEPS AFTER" CR 
+." LOADING THE TARGET SYSTEM WILL BE"   
+CR ." DISPLAYED AT THE END OF THE LOAD C
+YCLE" CR QUIT                           
+                                        
+                                        
+                                        
+                                        
+                               ( 21:47) 
+-------------------------------------------- SCREEN 071
+( INSTR-VIRTUAL SUBSYSTMS< 7/16/83> 71) 
+                                        
+   CONSTRUCTING A VIRTUAL SUBSYSTEM     
+REQUIRES THAT THE VARIOUS STEPS BE      
+IMPLEMENTED IN EXACT SEQUENCE.          
+                                        
+                                        
+   THE SCREENS ON THIS DISK WILL ENABLE 
+YOU TO RECREATE THE VIRTUAL SUBSYSTEMS  
+THAT ARE ON THE MVP-FORTH VIRTUAL       
+SYSTEM DISK, AND THUS, ILLUSTRATE HOW   
+TO CONSTRUCT YOUR OWN VIRTUAL           
+SUBSYSTEMS.                             
+                                        
+(CONT.)                                 
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 13:23) 
+-------------------------------------------- SCREEN 072
+( INSTR VIRTUAL INSTALLTN< 7/16/83> 72) 
+                                        
+   THE PREREQUISITES FOR COMPILIING A   
+VIRTUAL SUBSYSTEM ARE AS FOLLOWS:       
+                                        
+   1. FIRST SELECT THE GROUP OF WORDS   
+THAT YOU WANT TO COMPRISE THE SUB-      
+SYSTEM.  INSPECT EACH WORD TO ASSURE    
+THAT (A) IT WILL NOT BE CALLED BY       
+ANOTHER WORD IN YOUR SYSTEM THAT DOES   
+NOT ALSO CALL THE VIRTUAL IMAGE TO MEM- 
+ORY AND (B) IT DOES NOT CALL A WORD IN  
+ANOTHER VIRTUAL SUBSYSTEM.              
+                                        
+   2. DETERMINE THE SIZE IN SECTORS OF  
+YOUR CANDIDATE SUBSYSTEM BY LOADING IT  
+IN THE USUAL MANNER AND DOING AS        
+FOLLOWS:                                
+  HERE FIRSTWORD LFA - 0 256 U/MOD      
+  SWAP DROP 1+ .                        
+USE THIS NUMBER IN THE CONSTANT         
+   SYSNAME-SECTS                        
+                                        
+(CONT.)                        ( 13:23) 
+-------------------------------------------- SCREEN 073
+( INSTRUCTIONS VIRTUAL  L< 7/16/83> 73) 
+                                        
+   3. IF YOUR SUBSYSTEM CONTAINS CODE   
+WORDS, COPY THE SCREENS USED FOR        
+COMPILING THE UTILITIES AND SUBSTITUTE  
+YOUR SYSTEM NAME FOR EACH OCCURRENCE OF 
+UTIL-... OR ...-UTIL.  NOTE THAT THE    
+ASSEMBLER MUST BE RESIDENT IN LOWER     
+MEMORY WHEN CONSTRUCTING THIS KIND OF   
+SUBSYSTEM.  ALSO, THE ASSEMBLER MUST BE 
+FORGOTTEN BEFORE ADDING ANY WORDS THAT  
+CALL THE SUBSYSTEM.                     
+                                        
+   4. IF THERE ARE NO CODE WORDS IN THE 
+SUBSYSTEM, USE THE SCREENS THAT MAKE    
+THE VIRTUAL IMAGE OF FPA AS A MODEL.    
+                                        
+(CONT.)                                 
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 13:23) 
+-------------------------------------------- SCREEN 074
+( INSTRUCTIONS VIRTUAL   < 7/16/83> 74) 
+                                        
+   IF YOU ONLY WISH TO REDO THE LAST    
+ADDED SYBSYSTEM OR SUBSYSTEMS, YOU HAVE 
+TO BACK UP THE VARIABLE NEXT-SECTOR TO  
+WHAT IT WAS PRIOR TO ADDING THE         
+SUBSYSTEM TO BE RECOMPILED.  FOR        
+EXAMPLE, IF YOU WISH TO REDO SUBSYSTEM  
+UTIL, NOTE THAT THE SUB-SYSTEM ADDED    
+JUST PRIOR TO UTIL WAS A&E.  THE WORD   
+A&E-RWTS CONTAINS THE FIRST SECTOR AND  
+TRACK USED BY A&E.  IF THIS IS          
+CONVERTED INTO TOTAL SECTORS LESS ONE,  
+YOU WILL HAVE THE VALUE OF NEXT-SECTOR  
+JUST PRIOR TO ADDING UTIL.              
+                                        
+   IN THIS CASE, TO OBTAIN THE VALUE    
+OF NEXT-SECTOR DO AS FOLLOWS:           
+    VIRTUAL A&E-RWTS DUP 6 + @ (SEC)    
+    SWAP 8 + @ (TRK) SECS/TRK * + 1- .  
+THEN STORE THIS NUMBER IN NEXT-SECTOR   
+AND TYPE FORTH                          
+(CONT.)                                 
+                               ( 13:23) 
+-------------------------------------------- SCREEN 075
+( INSTRUCTIONS VIRTUAL   < 7/16/83> 75) 
+                                        
+   BE SURE TO DETERMINE THE SIZE IN     
+SECTORS OF YOUR NEW UTIL.  IF IT IS     
+DIFFERENT FROM:                         
+ VIRTUAL UTIL-SECTS . FORTH, THEN       
+CHANGE THE VALUE OF THE CONSTANT        
+UTIL-SECTS ON THE PROPER SCREEN WHERE   
+UTIL IS ADDED TO THE SYSTEM.            
+                                        
+   FINALLY, LOAD THE ASSEMBLER TEMPOR-  
+ARILY INTO LOWER MEMORY (THERE ARE CODE 
+WORDS IN UTIL) AND THEN LOAD THE        
+SCREENS THAT ADD UTIL TO THE SYSTEM.    
+                                        
+   THE ASSEMBLER WILL BE FORGOTTEN AT   
+THE APPROPRIATE POINT IN THE LOADING    
+PROCESS.                                
+                                        
+(CONT.)                                 
+                                        
+                                        
+                                        
+                               ( 13:23) 
+-------------------------------------------- SCREEN 076
+( INSTRUCTIONS VIRTUAL   < 7/16/83> 76) 
+                                        
+   TO GO THROUGH THE EXERCISE OF        
+ADDING THE VIRTUAL SUBSYSTEMS AS ARE    
+ON THE DISTRIBUTION DISK, FIRST,        
+   FORGET VIR-BASE   WHICH FORGETS      
+THE SYSTEM DOWN TO, BUT NOT INCLUDING   
+THE WORD D!.                            
+                                        
+   THEN LOAD SCREEN 78 ON THIS DISK     
+AND CAREFULLY FOLLOW INSTRUCTIONS.      
+                                        
+   NOTE THAT THE VIRTUAL IMAGES BEING   
+CREATED ARE WRITTEN ONTO THIS DISK      
+(AS A SCRATCH PAD) AND SHOULD           
+SUBSEQUENTLY BE COPIED TO YOUR SYSTEM   
+DISK BY COPY-VIRTUAL.                   
+                                        
+   ALSO NOTE, THAT THIS DISK MUST NOT   
+BE WRITE-PROTECTED FOR THIS OPERATION.  
+                                        
+(CONT.)                                 
+                                        
+                               ( 13:23) 
+-------------------------------------------- SCREEN 077
+( INSTRUCTIONS VIRTUAL   < 7/16/83> 77) 
+                                        
+   SINCE THE SCRATCHPAD AREA ON THIS    
+DISK IS ALSO THIS DISK'S VIRTUAL        
+SYSTEM, IT WILL PROBABLY NOT BE USABLE  
+BY THE MVP-FORTH SYSTEM ON THIS DISK    
+AFTER RECOMPILING THE VIRTUAL SYSTEM.   
+                                        
+   YOU CAN EITHER COPY-VIRTUAL FROM THE 
+MASTER FOR THIS DISK OR UPDATE THE      
+SYSTEM ON THIS DISK TO BE COMPATIBLE    
+WITH THE NEWLY COMPILED VIRTUAL SYSTEM. 
+                                        
+   TO ACCOMPLISH THE LATTER, WITH THE   
+MVP-FORTH SYSTEM THAT MATES WITH THE    
+REVISED VIRTUAL SYSTEM IN MEMORY, PLACE 
+THIS DISK IN DRIVE A AND DO:            
+                                        
+ 41 (OR 40 FOR APPLE II) LOAD           
+ THEN, WHEN LOADED,  SAVE-FORTH         
+   THIS WILL PLACE THE COMPATIBLE       
+SYSTEM ON THIS DISK AND RESTORE THE     
+METACOMPILER.                           
+(END OF INSTRUCTIONS)          ( 13:23) 
+-------------------------------------------- SCREEN 078
+( RECOMPILING VIRTUAL SYS< 7/16/83> 78) 
+        78 L QUIT                       
+   THE SCREENS ON THIS DISK WILL ENABLE 
+YOU TO RECREATE THE VIRTUAL SUBSYSTEMS  
+AFTER ANY MODIFICATIONS TO THE SOURCE   
+CODE.                                   
+                                        
+   WITH THIS DISK IN DRIVE A, PLACE THE 
+MVP-FORTH VIRTUAL SYSTEMS DISK WITH     
+SOURCE CODE FOR ASSEMBLER, EDITOR, ETC. 
+IN DRIVE B AND THEN:                    
+                                        
+   (A) IF THE SOURCE SCREENS ON THE     
+MVP-FORTH VIRTUAL SYSTEMS DISK IN DRIVE 
+B HAVE NOT BEEN MOVED, YOU CAN LOAD     
+SCREEN 79 FOR AUTOMATIC LOADING OF THE  
+VIRTUAL SYBSYSTEMS.                     
+                                        
+         *******  OR *******            
+   (B) LOAD SCREEN 80 ON THIS DISK FOR  
+STEP BY STEP LOADING OF THE VIRTUAL     
+SUBSYSTEMS USING THE ADJUSTED BEGINNING 
+SCREEN NUMBER FOR EACH RELOCATED SUB-   
+SYSTEM.                        ( 13:23) 
+-------------------------------------------- SCREEN 079
+( AUTO-LOAD OF VIRTUAL SY< 6/15/83> 79) 
+                                        
+( THIS SCREEN REQUIRES THAT THIS DISK ) 
+( BE IN DRIVE A AND A COPY OF THE     ) 
+( MVP-FORTH VIRTUAL SYSTEM DISK WITH  ) 
+( SOURCE FOR ASSEMBLER, EDITOR, AND   ) 
+( UTILITIES BE IN DRIVE B.            ) 
+                                        
+  80 LOAD                               
+  87 LOAD   35 ONB LOAD   43 ONB LOAD   
+  88 LOAD   35 ONB LOAD   42 ONB LOAD   
+  92 LOAD   92 ONB LOAD                 
+  93 LOAD                               
+                                        
+EXIT                                    
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 13:27) 
+-------------------------------------------- SCREEN 080
+( VIRTUAL SYSTEMS        < 6/15/83> 80) 
+                                        
+        FORTH DEFINITIONS               
+                                        
+                                        
+  53248 CONSTANT VIR-BASE ( D000 HEX )  
+      0 CONSTANT SYS-LINK1              
+  ' SYS-LINK1 DUP LFA SWAP !            
+      0 CONSTANT SYS-LINK2              
+  ' SYS-LINK2 DUP LFA SWAP !            
+        VARIABLE SYS-FLG                
+                                        
+                                        
+: FORGET-SYS  0 SYS-FLG ! SYS-LINK1     
+    SYS-LINK2 ! CURRENT @ CONTEXT !     
+    BEEP ;                              
+                                        
+                                        
+  ' FORGET-SYS CFA ' SAVE-FORTH !       
+   ( REPLACES THE NOOP )                
+                                        
+-->                                     
+                                        
+                               ( 13:27) 
+-------------------------------------------- SCREEN 081
+( VIRTUAL SYSTEMS        < 6/15/83> 81) 
+ VOCABULARY VIRTUAL IMMEDIATE           
+ VIRTUAL DEFINITIONS                    
+ VARIABLE NEXT-SECTOR  SECS/TRK TRKS/HD 
+   * 1- NEXT-SECTOR !                   
+ 20083 CONSTANT VIR-TST                 
+( RECOMMEND: USE DATE AS TEST NUMBER  ) 
+( FOR VIR-TST UPDATES                 ) 
+                                        
+( PARAM-ADDR ---, ADDR HD DR SEC TRK )  
+: @RWTS-PARAM  DUP 9 + SWAP             
+      DO I @ 2 /LOOP ;                  
+                                        
+: VIR-RES?  12 + @ VIR-TST = NOT        
+   IF CR                                
+    ." WRONG DISK -- NO VIRTUAL IMAGE"  
+    FORGET-SYS QUIT                     
+   THEN ;                               
+: MEMTST  FORGET-SYS BSM @ 2 = NOT      
+      IF COPY-MON R2-W2                 
+      THEN ;                            
+ MEMTST                                 
+FORTH DEFINITIONS -->                   
+                               ( 13:27) 
+-------------------------------------------- SCREEN 082
+( A&E-SYS <ASMBLR & EDITO< 6/15/83> 82) 
+                                        
+   VIRTUAL DEFINITIONS                  
+                                        
+   SYS-LINK1 CONSTANT A&E-LASTLFA       
+   SYS-LINK2 CONSTANT A&E-FIRSTLFA      
+          33 CONSTANT A&E-SECTS         
+             VARIABLE A&E-RWTS 8 ALLOT  
+                                        
+                                        
+   FORTH DEFINITIONS                    
+                                        
+                                        
+: GET-A&E  VIRTUAL SYS-FLG @ 1 = NOT    
+     IF MEMTST A&E-RWTS @RWTS-PARAM     
+      1 A&E-SECTS RWTS 1 SYS-FLG !      
+      VIR-BASE VIR-RES? SYS-LINK1       
+      A&E-FIRSTLFA ! A&E-LASTLFA        
+      SYS-LINK2 !                       
+     THEN ;                             
+                                        
+FORTH -->                               
+                                        
+                               ( 13:27) 
+-------------------------------------------- SCREEN 083
+(                        < 6/15/83> 83) 
+                                        
+                                        
+-->                                     
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 13:27) 
+-------------------------------------------- SCREEN 084
+( UTIL-SYS               < 6/15/83> 84) 
+                                        
+   VIRTUAL DEFINITIONS                  
+                                        
+   SYS-LINK1 CONSTANT UTIL-LASTLFA      
+   SYS-LINK2 CONSTANT UTIL-FIRSTLFA     
+          12 CONSTANT UTIL-SECTS        
+             VARIABLE UTIL-RWTS 8 ALLOT 
+                                        
+                                        
+   FORTH DEFINITIONS                    
+                                        
+                                        
+: GET-UTIL  VIRTUAL SYS-FLG @ 3 = NOT   
+     IF MEMTST UTIL-RWTS @RWTS-PARAM    
+      1 UTIL-SECTS RWTS 3 SYS-FLG !     
+      VIR-BASE VIR-RES? SYS-LINK1       
+      UTIL-FIRSTLFA ! UTIL-LASTLFA      
+      SYS-LINK2 !                       
+     THEN ;                             
+                                        
+   FORTH -->                            
+                                        
+                               ( 13:27) 
+-------------------------------------------- SCREEN 085
+( FPA-SYS                < 6/15/83> 85) 
+                                        
+   VIRTUAL DEFINITIONS                  
+                                        
+   SYS-LINK1 CONSTANT FPA-LASTLFA       
+   SYS-LINK2 CONSTANT FPA-FIRSTLFA      
+          35 CONSTANT FPA-SECTS         
+             VARIABLE FPA-RWTS 8 ALLOT  
+   ( TRANSL&DECOMPL ONLY )              
+   0 FPA-RWTS ! ( IN CASE NOT TO BE   ) 
+       ( INSTALLED.  PREVENTS ATTEMPT ) 
+       ( TO READ DISK.                ) 
+                                        
+   FORTH DEFINITIONS                    
+: GET-FPA  VIRTUAL FPA-RWTS @ 0=        
+     IF HERE VIR-RES? THEN              
+   SYS-FLG @ 4 = NOT                    
+     IF MEMTST FPA-RWTS @RWTS-PARAM 1   
+      FPA-SECTS RWTS 4 SYS-FLG !        
+      VIR-BASE VIR-RES? SYS-LINK1       
+      FPA-FIRSTLFA ! FPA-LASTLFA        
+      SYS-LINK2 !                       
+     THEN ;                             
+FORTH -->                      ( 13:27) 
+-------------------------------------------- SCREEN 086
+( INSTRUCTIONS           < 6/15/83> 86) 
+CR CR                                   
+." NOW LEAVE THIS DISK IN DRIVE A AND"  
+CR ." PLACE A COPY OF THE SYSTEM DISTRIB
+UTION" CR ." DISK (MVP-FORTH VIRTUAL SYS
+TEM DISK)" CR ." IN DRIVE B." CR CR     
+                                        
+." THE SOURCE SCREENS FOR THE ASSEMBLER,
+" CR ." EDITOR, AND UTILITIES WILL BE LO
+ADED" CR ." FROM DRIVE B." CR CR        
+." NEXT, LOAD SCREEN 87 TO BEGIN ADDING"
+CR                                      
+   ." THE VIRTUAL IMAGE OF THE COMBINED"
+ CR ." ASSEMBLER AND EDITOR." CR CR     
+                                        
+EXIT                                    
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 13:27) 
+-------------------------------------------- SCREEN 087
+( INSTALL A&E <1ST SCRN> < 6/15/83> 87) 
+                                        
+   DECIMAL FORGET-SYS                   
+   FREEZE  VIRTUAL VIR-BASE DP !        
+                                        
+   VIR-TST FORTH CONSTANT VIR-CHK       
+   VIRTUAL LATEST PFA-LFA               
+   ' A&E-FIRSTLFA ! FORTH CR CR         
+." NOW LOAD SCREEN 35 ONB" CR           
+." (ASSEMBLER SOURCE FROM DRIVE B)"  CR 
+." AND SCREEN 43 ONB FOR THE VIRTUAL" CR
+ ." VERSION." CR CR ." NEXT, LOAD SCREEN
+ 45 ONB TO ADD EDITOR" CR ." TO THE A&E 
+SUBSYSTEM."                             
+CR CR  ." WHEN FINISHED LOADING THE VIRT
+UAL" CR ." VERSION, LOAD SCREEN 88 TO CO
+MPLETE" CR ." ADDING THE A&E SUBSYSTEM."
+   CR CR   EXIT                         
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 13:27) 
+-------------------------------------------- SCREEN 088
+( INSTALL A&E            < 6/15/83> 88) 
+                                        
+   VIRTUAL                              
+                                        
+   LATEST PFA-LFA ' A&E-LASTLFA !       
+   ( SAVE LFA OF LAST WORD IN A&E)      
+                                        
+   FORTH                                
+                                        
+   ICEBOX @ VOC-LINK !                  
+( REMOVE ANY ADDED VOC FROM VOC-LINKAGE)
+                                        
+   ICEBOX 2+ @ DP !                     
+   ( RESTORE PRIOR DP )                 
+                                        
+   ICEBOX 4 + @ CONTEXT @ ! DEFINITIONS 
+   ( RESTORE PRIOR LATESTLFA )          
+                                        
+-->                                     
+                                        
+                                        
+                                        
+                                        
+                               ( 13:27) 
+-------------------------------------------- SCREEN 089
+( INSTALL A&E            < 6/15/83> 89) 
+                                        
+                                        
+   FORGET-SYS VIRTUAL 3 SYS-FLG !       
+                                        
+   SYS-LINK1  A&E-FIRSTLFA ! A&E-LASTLFA
+   SYS-LINK2 !                          
+                                        
+   FORTH                                
+: CODE GET-A&E ASSEMBLER [ ' CODE CFA ] 
+    LITERAL FORTH EXECUTE ; IMMEDIATE   
+                                        
+                                        
+: ;CODE GET-A&E ASSEMBLER [ ' ;CODE CFA 
+    ] LITERAL FORTH EXECUTE ;           
+    IMMEDIATE                           
+                                        
+                                        
+-->                                     
+                                        
+                                        
+                                        
+                                        
+                               ( 13:27) 
+-------------------------------------------- SCREEN 090
+( INSTALL A&E            < 6/15/83> 90) 
+                                        
+( EDITERR AS WELL AS N EDIT WILL CALL ) 
+( UP EDIT )                             
+                                        
+: EDITERR  GET-A&E  [ ' EDITERR CFA ]   
+    LITERAL EXECUTE ;                   
+                                        
+                                        
+: EDIT GET-A&E  EDITOR [ ' EDIT CFA ]   
+    LITERAL EXECUTE FORTH ;             
+                                        
+  : SCRHDS PAGE GET-A&E  [ EDITOR       
+    ' SCRHDS CFA ] LITERAL FORTH        
+     EXECUTE ;                          
+                                        
+                                        
+-->                                     
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 13:27) 
+-------------------------------------------- SCREEN 091
+( INSTALL A&E    <CONCLD>< 6/15/83> 91) 
+   VIRTUAL                              
+   A&E-RWTS VIR-BASE OVER ! ( ADDR    ) 
+   6 OVER 2+ !               ( SLOT 6 ) 
+   NEXT-SECTOR @ A&E-SECTS - DUP        
+   NEXT-SECTOR !     ( UPDATE NEXT-SEC) 
+   1+ SECS/TRK /MOD 0 4 PICK 4 + !      
+                           ( DRV 0   )  
+   3 PICK 8 + ! OVER 6 + ! ( TRK&SEC )  
+   @RWTS-PARAM 0 A&E-SECTS RWTS         
+   ( SAVE A&E TO DISK )                 
+   FORGET-SYS CR CR                     
+." NOW LOAD SCREEN 35 ONB AND 42 ONB TO"
+ CR ." PLACE THE NON-VIRTUAL ASSEMBLER I
+NTO" CR ." LOWER MEMORY PREPARATORY TO L
+OADING" CR ." THE UTILITIES." CR CR     
+." WHEN THE ASSEMBLER IS LOADED, LOAD"  
+CR ." SCREEN 92." CR CR                 
+                                        
+EXIT                                    
+                                        
+                                        
+                                        
+                               ( 13:27) 
+-------------------------------------------- SCREEN 092
+( INSTALL UTIL<1ST SCRN> < 6/15/83> 92) 
+                                        
+   DECIMAL FORGET-SYS                   
+                                        
+   FREEZE  VIRTUAL VIR-BASE DP !        
+                                        
+   VIR-TST FORTH CONSTANT VIR-CHK       
+   VIRTUAL                              
+                                        
+   LATEST PFA-LFA ' UTIL-FIRSTLFA !     
+   FORTH CR CR                          
+                                        
+." NOW LOAD SCREEN 92 ONB TO ADD VIRTUAL
+" CR ." UTILITIES." CR CR               
+                                        
+." WHEN FINISHED, LOAD SCREEN 93 TO"    
+CR ." COMPLETE THE PROCESS." CR CR      
+                                        
+EXIT                                    
+                                        
+                                        
+                                        
+                                        
+                               ( 13:27) 
+-------------------------------------------- SCREEN 093
+( INSTALL UTILITIES      < 6/15/83> 93) 
+                                        
+   VIRTUAL                              
+                                        
+   LATEST PFA-LFA ' UTIL-LASTLFA !      
+   ( SAVE LFA OF LAST WORD IN UTIL)     
+                                        
+   FORTH                                
+                                        
+   ICEBOX @ VOC-LINK !                  
+   ( REMOVE ANY ADDEC VOC FROM VOC-LINK)
+                                        
+   ICEBOX 2+ @ DP !                     
+   ( RESTORE PRIOR DP )                 
+                                        
+   ICEBOX 4 + @ CONTEXT @ ! DEFINITIONS 
+   ( RESTORE PRIOR LATESTLFA )          
+                                        
+-->                                     
+                                        
+                                        
+                                        
+                                        
+                               ( 13:27) 
+-------------------------------------------- SCREEN 094
+( INSTALL UTILITIES      < 6/15/83> 94) 
+   FORGET-SYS VIRTUAL 3 SYS-FLG !       
+   SYS-LINK1  UTIL-FIRSTLFA !           
+   UTIL-LASTLFA SYS-LINK2 ! FORTH       
+   FORGET ASSEMBLER                     
+   ( THE TEMPORARY ONE IN LOWER MEMORY) 
+   ( DO ANY VIRTUAL CALLING OF UTIL   ) 
+   ( WORDS HERE.                      ) 
+: INITDISK GET-UTIL [ ' INITDISK CFA ]  
+    LITERAL EXECUTE ;                   
+: COPYDISK GET-UTIL [ ' COPYDISK CFA ]  
+    LITERAL EXECUTE ;                   
+: COPYNEW  GET-UTIL [ ' COPYNEW CFA  ]  
+    LITERAL EXECUTE ;                   
+: DUMP GET-UTIL [ ' DUMP CFA ] LITERAL  
+    EXECUTE ;                           
+: COPYSCRNS GET-UTIL [ ' COPYSCRNS CFA ]
+    LITERAL EXECUTE ;                   
+: ERASESCRNS GET-UTIL [ ' ERASESCRNS CFA
+    ] LITERAL EXECUTE ;                 
+: COPY-VIRTUAL GET-UTIL [ ' COPY-VIRTUAL
+    CFA ] LITERAL EXECUTE ;             
+-->                                     
+                               ( 13:27) 
+-------------------------------------------- SCREEN 095
+( INSTALL UTILITIES <CONC< 6/15/83> 95) 
+                                        
+   VIRTUAL UTIL-RWTS VIR-BASE OVER !    
+   ( ADDR          )                    
+   6 OVER 2+ ! ( SLOT 6 ALWAYS        ) 
+   NEXT-SECTOR @ UTIL-SECTS - DUP       
+   NEXT-SECTOR ! ( UPDATE NXT-SEC)      
+   1+ SECS/TRK /MOD 0 4 PICK 4 + !      
+         ( DRV 0       )  3 PICK 8 + !  
+   OVER 6 + ! ( TRK & SEC)              
+   @RWTS-PARAM 0 UTIL-SECTS RWTS        
+  FORGET-SYS CR CR ." IF YOU INTEND TO A
+DD THE FPA NOW, LOAD" CR ." SCREEN 96; O
+THERWISE, PLACE A SYSTEM" CR ." DISTRIBU
+TION DISK WITH SOURCE SCREENS" CR ." IN 
+DRIVE B AND DO 103 ONB LOAD." CR CR     
+." FINALLY, PLACE AN INITIALIZED DISK IN
+" CR ." DRIVE B AND TYPE COPY-VIRTUAL." 
+ CR ." THEN MOVE THAT DISK TO DRIVE A AN
+D DO" CR ." SAVE-FORTH TO SAVE THE NEWLY
+ COMPILED" CR ." SYSTEM."  CR CR        
+                                        
+EXIT                                    
+                               ( 13:27) 
+-------------------------------------------- SCREEN 096
+( INSTALL FPA <1ST SCRN> < 6/17/83> 96) 
+                                        
+   DECIMAL FORGET-SYS                   
+   FREEZE                               
+   VIRTUAL VIR-BASE DP !                
+                                        
+   VIR-TST FORTH CONSTANT VIR-CHK       
+   VIRTUAL LATEST PFA-LFA               
+   ' FPA-FIRSTLFA  ! FORTH CR CR        
+                                        
+." NOTE THE FOLLOWING, IT WILL BE ERASED
+" CR ." BY LOADING FPA." CR CR          
+." PLACE FPA SOURCE DISK IN DRIVE B AND"
+ CR ." TYPE EXACTLY:" CR                
+." 10 ONB LOAD LOADTRANSLATOR ADDDECOMPI
+LER" CR ." (SPACE) 97 LOAD (RETN)"      
+CR CR                                   
+." AFTER FPA IS LOADED, THIS WILL LOAD" 
+CR ." SCREEN 97 TO COMPLETE THE PROCESS 
+OF" CR ." PLACING FPA ON THE DISK AS A V
+IRTUAL" CR ." SYSTEM." CR CR            
+   CR CR EXIT                           
+                                        
+                               ( 15:34) 
+-------------------------------------------- SCREEN 097
+( INSTALL FPA            < 6/15/83> 97) 
+                                        
+   VIRTUAL                              
+                                        
+   LATEST PFA-LFA ' FPA-LASTLFA !       
+   ( SAVE LFA OF LAST WORD IN FPA)      
+                                        
+   FORTH                                
+                                        
+   ICEBOX @ VOC-LINK !                  
+ ( REMOVE ANY ADDED VOC FROM VOC-LINK ) 
+                                        
+   ICEBOX 2+ @ DP !                     
+   ( RESTORE PRIOF  DP )                
+                                        
+   ICEBOX 4 + @ CONTEXT @ ! DEFINITIONS 
+   ( RESTORE PRIOR LATESTLFA )          
+                                        
+                -->                     
+                                        
+                                        
+                                        
+                                        
+                               ( 13:27) 
+-------------------------------------------- SCREEN 098
+( INSTALL FPA            < 7/20/83> 98) 
+                                        
+                                        
+   FORGET-SYS VIRTUAL 4 SYS-FLG !       
+                                        
+   SYS-LINK1  FPA-FIRSTLFA ! FPA-LASTLFA
+   SYS-LINK2 !                          
+                                        
+   FORTH                                
+   ( THE WORDS DECOMPILE, TRANSLATE, )  
+   ( OR GET-FPA WILL CALL UP FPA )      
+                                        
+                                        
+: DECOMPILE GET-FPA [ ' DECOMPILE CFA ] 
+    LITERAL EXECUTE ;                   
+                                        
+: TRANSLATE GET-FPA [ ' TRANSLATE CFA ] 
+   LITERAL EXECUTE ;                    
+-->                                     
+                                        
+                                        
+                                        
+                                        
+                               ( 13:25) 
+-------------------------------------------- SCREEN 099
+( INSTALL FPA            < 6/15/83> 99) 
+                                        
+   VIRTUAL                              
+                                        
+   FPA-RWTS VIR-BASE OVER !             
+   ( ADDR           )                   
+                                        
+   6 OVER 2+ !                          
+   ( SLOT 6 ALWAYS   )                  
+                                        
+   NEXT-SECTOR @ FPA-SECTS - DUP        
+   NEXT-SECTOR ! ( UPDATE NEXT-SEC )    
+                                        
+   1+ SECS/TRK /MOD 0 4 PICK 4 + !      
+        ( DRV 0  )                      
+                                        
+   3 PICK 8 + ! OVER 6 + !              
+   ( TRK & SEC )                        
+                                        
+   @RWTS-PARAM 0 FPA-SECTS RWTS         
+   ( SAVE FPA TO DISK )                 
+                                        
+   FORGET-SYS                           
+-->                            ( 13:27) 
+-------------------------------------------- SCREEN 100
+( INSTALL FPA       <CONC< 6/15/83>100) 
+                                        
+CR CR                                   
+." PLACE THE MVP-FORTH VIRTUAL SYSTEM DI
+SK" CR ." WITH SOURCE SCREENS IN DRIVE B
+ AND DO" CR ." 103 ONB LOAD." CR CR     
+." FINALLY, PLACE AN INITIALIZED DISK IN
+" CR ." DRIVE B AND TYPE COPY-VIRTUAL." 
+CR ." THEN MOVE THAT DISK TO DRIVE A AND
+" CR ." DO A SAVE-FORTH TO SAVE THE NEWL
+Y" CR ." COMPILED SYSTEM." CR           
+                                        
+EXIT                                    
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                               ( 13:27) 
+-------------------------------------------- SCREEN 101
+( <RWTS>                                
+         < 6/ 2/83>101) ( THE FOLLOWING 
+IS INSTALLED WITHIN THE DOS AT HEX B65E 
+ )      HEX                             
+                                ( ADR XX
+ DRV SEC TRK R/W NSECTS ---, F)         
+                CODE  DOSRWTS B7EB STY, 
+TXA, CLC, 0C # ADC, XSAVE STA, BOT LDA, 
+  N STA, SEC 2+ LDA, B7EC STA, SEC 6 + L
+DA, B7EA STA, B7EA INC,   B8 # LDA, BE2C
+ STA, SEC LDY, 0=                       
+            IF, INY, INY, C8 # LDA, BE2C
+ STA,                               THEN
+, B7F4 STY, SEC A + LDA, B7F0 STA, SEC B
+ + LDA,           00 # LDY, SEC A + STY,
+ SEC B + STY, SEC 4 + LDY, N DEC, CLC,  
+  N ADC, B7F1 STA, TYA, N ADC, N INC,   
+                        DECIMAL -->     
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+-------------------------------------------- SCREEN 102
+( DOSRWTS<CONT>                         
+         < 6/ 2/83>102) HEX             
+                                        
+            BEGIN, 10 # CMP, CS         
+                                       I
+F, 4 ROLL 4 ROLL 10 # SBC, B7EC INC, CLC
+, CS                UNTIL, ( TO MAKE REL
+OCATABLE  )                             
+       THEN, B7ED STA,                  
+                            BEGIN, B7 # 
+LDA, E8 # LDY, BD00 JSR, CS             
+             IF, XSAVE LDX, B7F5 LDA, BO
+T STA, RTS,                          THE
+N, B7F1 DEC, B7ED DEC, 0<               
+                     IF, 0F # LDY, B7ED 
+STY, B7EC DEC,                          
+     THEN, N DEC, 0=                    
+                            UNTIL, XSAVE
+ LDX, RTS, C;                           
+        DECIMAL                         
+                                        
+                                        
+                                        
+                                        
+-------------------------------------------- SCREEN 103
+( INITIAL INSTALLATION OF LONG OPERATORS
+ ON DISK < 6/ 6/83>103) HEX ( THE ASSEMB
+LER IN THE METACOMPILER IS NOT USED HERE
+.     ) ( FORGET COPYRIGHT ALLOWS ACCESS
+ TO THE VIRTUAL MEM ASSMBLR )   ( THE ME
+M FROM F600 TO THE MONITOR IS USED FOR L
+ONG OPERATORS )   FORGET COPYRIGHT      
+                                        
+( SCRATCHPAD FOR CONSTRUCTING LONG OPERA
+TOR SUBROUTINES  )      PAD 0 100 U/MOD 
+SWAP DROP 1+ 100 * DUP CONSTANT DPSAV 8 
+- DP !                                  
+                                CODE S13
+  BOT LDA, N STA, BOT 1+ LDA, N 1+ STA, 
+C013 LDA,           80 # AND, .A ROL, 00
+ # LDA, .A ROL, RTS, C;                 
+DP @ 200 DP +! ' S13 DPSAV - BASEL + CON
+STANT SAVRD DP !                        
+                                        
+        CODE S C014 LDA, 80 # AND, .A RO
+L, 00 # LDA, .A ROL,                RTS,
+ C;                                     
+                DP @ 200 DP +! ' S DPSAV
+ - BASEL + CONSTANT SAVWR DP !          
+-------------------------------------------- SCREEN 104
+( C@L @L C!L !L                         
+         < 6/ 2/83>104) HEX             
+                                        
+        ( C@L AND @L, Y IS 0 FOR BYTE, 1
+ FOR WORD )                     CODE T  
+N 1- STY, SAVRD JSR, PHA, SEC LDY, C002 
+,Y STA,             00 # LDY, N )Y LDA, 
+SEC STA, N 1- LDY, 0= NOT               
+     IF, N )Y LDA, SEC 1+ STA, THEN,    
+                            PLA, TAY, C0
+02 ,Y STA, INX, INX, RTS, C;            
+                                        
+                                ( C!L AN
+D !L, N IS SWITCH  )                    
+                CODE U  N 1- STY, BOT LD
+A, N STA, BOT 1+ LDA, N 1+ STA,         
+    SAVWR JSR, PHA, SEC LDY, C004 ,Y STA
+, 00 # LDY,                 SEC 2+ LDA, 
+N )Y STA, N 1- LDY, 0= NOT              
+             IF, SEC 3 + LDA, N )Y STA, 
+THEN,                               PLA,
+ TAY, C004 ,Y STA, TXA, CLC, 6 # ADC, TA
+X, RTS, C;      DECIMAL -->             
+                                        
+-------------------------------------------- SCREEN 105
+( CMOVEL                                
+         < 6/ 2/83>105) HEX             
+                                        
+        ( CMOVEL )                      
+                                CODE V  
+TXA, CLC, 0A # ADC, XSAVE STA, SAVRD JSR
+, PHA,              SAVWR JSR, PHA,     
+                                        
+    SEC LDA, N 2+ STA, SEC 1+ LDA, N 3 +
+ STA,                       SEC 4 + LDA,
+ N 4 + STA, SEC 5 + LDA, N 5 + STA, SEC 
+2+ LDY,     C004 ,Y STA, SEC 6 + LDY, C0
+02 ,Y STA, 00 # LDY,                  BE
+GIN, BEGIN, N CPY, 0=                   
+                            IF, N 1+ DEC
+, 0<                                    
+               IF, PLA, TAY, C004 ,Y STA
+, PLA, TAY, C002 ,Y STA,                
+XSAVE LDX, RTS,                         
+                    THEN, THEN, N 4 + )Y
+ LDA, N 2+ )Y STA, INY, 0=              
+ UNTIL, N 5 + INC, N 3 + INC, CLC, CS   
+                      UNTIL, C; DECIMAL 
+-->                                     
+-------------------------------------------- SCREEN 106
+( <RWTSL>                               
+         < 6/ 2/83>106) HEX             
+                                        
+        ( JUMPS TO SUBROUTINE  RWTS IN D
+OS AREA )                       ( DOS MU
+ST BE RESIDENT IN SEG TO BE TURNED ON   
+             )  CODE W  SAVRD 8 + JSR, P
+HA, SAVWR JSR, PHA,                     
+    SEC 0C + LDY, C002 ,Y STA, C004 ,Y S
+TA, 00 # LDY, B65E JSR,     BOT LDA, SEC
+ STA, BOT 1+ LDA, SEC 1+ STA, INX, INX, 
+            PLA, TAY, C004 ,Y STA, PLA, 
+TAY, C002 ,Y STA, RTS, C;       DECIMAL 
+                                        
+                EXIT                    
+                                        
+                                        
+                        SEE NEXT SCREEN 
+TO INSTALL ON DISK                      
+                                        
+                                        
+                                        
+                                        
+                                        
+-------------------------------------------- SCREEN 107
+( SAVE LONG OPERATORS ONTO DISK, SEC A, 
+TRK 0    < 6/ 2/83>107) HEX             
+                                        
+         ( SAVE SUBROUTINES ONTO DISK  )
+                                 DPSAV 6
+ 0 A 0 0 2 RWTS                         
+                                        
+                                        
+ ( FINISHED WITH WORK SPACE  )          
+                         FORGET DPSAV   
+                                        
+        DECIMAL                         
+                                EXIT    
+                                        
+                                        
+                                        
+Long subroutines can now be called from 
+disk to memory just     below the Monito
+r. Long subroutines must not be installe
+d in    either the MAIN or AUX memory lo
+cations -- OR ELSE!                     
+                                        
+                                        
+                                        
+-------------------------------------------- SCREEN 108
+(                                       
+         < 5/30/83>108)                 
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
